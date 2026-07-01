@@ -1,0 +1,48 @@
+﻿
+
+@model IEnumerable<EventEase.Models.Booking>
+
+@{
+    ViewData["Title"] = "Bookings";
+}
+
+<h1 class="mt-4">📋 All Bookings</h1>
+<label for="searchTerm"><strong>Filter:</strong></label>
+<form asp-action="Index" method="get" class="mb-3 d-flex gap-2">
+    <input type="text" name="search" value="@Context.Request.Query["search"]" class="form-control w-25" placeholder="Search by event, venue or date" />
+    <button type="submit" class="btn btn-primary">Search</button>
+    <a asp-action="Index" class="btn btn-secondary">Clear</a>
+</form>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary mb-3">➕ Create New Booking</a>
+    <a asp-action="DetailsView" class="btn btn-dark mb-3">🔍 Booking Search View</a>
+</p>
+
+<table class="table table-striped table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th>Booking Date</th>
+            <th>Event</th>
+            <th>Event Type</th> 
+            <th>Venue</th>
+            <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.BookingDate.ToString("MMM dd, yyyy")</td>
+                <td>@item.Event?.Name</td>
+                <td>@item.Event?.EventType?</td> 
+                <td>@item.Venue?.Name</td>
+                <td class="text-center">
+                    <a class="btn btn-sm btn-outline-info" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
